@@ -1,0 +1,49 @@
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672" # para UI
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  suitor-service:
+    build: ./suitor-service
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+  girl-service:
+    build: ./girl-service
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+  mom-service:
+    build: ./mom-service
+    depends_on:
+      rabbitmq:
+        condition: service_healthy 
+  dad-service:
+    build: ./dad-service
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+  love-coordinator:
+    build: ./love-coordinator
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  love-dashboard:
+    build: ./love-dashboard
+    ports:
+      - "5000:5000"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy      

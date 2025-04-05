@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Estado del Amor 💘</title>
+  <style>
+    body { font-family: Arial; background: #fff0f5; text-align: center; }
+    table { margin: auto; border-collapse: collapse; width: 60%; }
+    th, td { padding: 10px; border: 1px solid #ccc; }
+    th { background: #ffe4e1; }
+    td { font-size: 18px; }
+  </style>
+</head>
+<body>
+  <h1>💘 Monitor del Amor 💘</h1>
+  <table>
+    <tr>
+      <th>Pretendiente</th>
+      <th>Mamá</th>
+      <th>Papá</th>
+      <th>Decisión final</th>
+    </tr>
+    {% for name, data in pretendientes.items() %}
+    <tr>
+      <td>{{ name }}</td>
+      <td>{{ data.mom }}</td>
+      <td>{{ data.dad }}</td>
+      <td>{{ data.final }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+</html>
