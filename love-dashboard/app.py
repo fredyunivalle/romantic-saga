@@ -12,6 +12,10 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
+
+# Espera inicial para asegurar que RabbitMQ esté listo
+time.sleep(10)
+
 app = Flask(__name__)
 pretendientes = defaultdict(lambda: {"mom": "⏳", "dad": "⏳", "final": "⏳"})
 

@@ -13,6 +13,7 @@ This project is a fun and educational simulation of the SAGA pattern using micro
 - `dad-service`: Dad gives his approval or rejection.
 - `love-coordinator`: Listens to both parents and makes the final decision based on both responses.
 - `love-dashboard`: A Flask web app that shows each suitor's status (mom, dad, and final decision).
+- `bigbro-service`: A passive and sarcastic "Big Brother" who listens to Ana's thoughts and logs his judgments, without affecting the saga.
 - `rabbitmq`: The message broker that allows communication between all services.
 
 ---
@@ -24,6 +25,20 @@ This project is a fun and educational simulation of the SAGA pattern using micro
 - Flask
 - Docker & Docker Compose
 - HTML + Bootstrap (in the dashboard)
+
+---
+
+## 🔌 RabbitMQ Plugins Used
+
+RabbitMQ in this project comes with the following powerful plugins enabled:
+
+| Plugin Name             | Purpose                                                                 |
+|-------------------------|-------------------------------------------------------------------------|
+| `rabbitmq_prometheus`   | Exposes metrics in Prometheus format, ideal for Grafana visualization. |
+| `rabbitmq_federation`   | Allows connection of multiple RabbitMQ brokers across locations.        |
+| `rabbitmq_management`   | Provides a user-friendly web UI at `http://localhost:15672`.            |
+| `rabbitmq_management_agent` | Enables detailed metrics and control in the UI.                    |
+| `rabbitmq_web_dispatch` | Powers the web endpoints required by the management interface.          |
 
 ---
 
@@ -39,12 +54,12 @@ This project uses the `fanout` exchange type, which broadcasts messages to **all
 
 ### Exchanges in this simulation:
 
-| Exchange            | Purpose                                                         | Who publishes     | Who listens         |
-|---------------------|------------------------------------------------------------------|-------------------|----------------------|
-| `romantic`          | Where love proposals are sent                                    | suitor-service    | girl-service         |
-| `girl-thinking`     | Ana announces she's considering a proposal                       | girl-service      | mom-service, dad-service |
-| `romantic-approval` | Parents respond with approval or rejection                       | mom/dad services  | love-coordinator     |
-| `romantic-decision` | Final outcome (approved or rejected) from coordinator            | love-coordinator  | girl-service, dashboard |
+| Exchange            | Purpose                                                         | Who publishes     | Who listens                 |
+|---------------------|------------------------------------------------------------------|-------------------|------------------------------|
+| `romantic`          | Where love proposals are sent                                    | suitor-service    | girl-service                 |
+| `girl-thinking`     | Ana announces she's considering a proposal                       | girl-service      | mom-service, dad-service, bigbro-service |
+| `romantic-approval` | Parents respond with approval or rejection                       | mom/dad services  | love-coordinator             |
+| `romantic-decision` | Final outcome (approved or rejected) from coordinator            | love-coordinator  | girl-service, dashboard      |
 
 Each microservice declares its own exclusive queue and binds it to the relevant exchange. Example:
 

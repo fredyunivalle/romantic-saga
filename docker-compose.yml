@@ -34,6 +34,11 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
+  bigbro-service:
+    build: ./bigbro-service
+    depends_on:
+      rabbitmq:
+        condition: service_healthy    
   love-coordinator:
     build: ./love-coordinator
     depends_on:
